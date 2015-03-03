@@ -1,4 +1,5 @@
 import sqlite3 as lite
+import pandas as pd
 con = lite.connect('getting_started.db')
 
 with con:    
@@ -27,4 +28,9 @@ with con:
     weather = (('Las Vegas', 2013, 'July', 'December', 80),('Atlanta', 2013, 'July', 'January', 71))
     cur.executemany("INSERT INTO weather VALUES(?,?,?,?,?)", weather)
     
-    
+    #Work with data frame
+    df = pd.read_sql("SELECT * FROM cities", con)
+    print df
+	
+
+	    
