@@ -28,9 +28,27 @@ with con:
     weather = (('Las Vegas', 2013, 'July', 'December', 80),('Atlanta', 2013, 'July', 'January', 71))
     cur.executemany("INSERT INTO weather VALUES(?,?,?,?,?)", weather)
     
-    #Work with data frame
-    df = pd.read_sql("SELECT * FROM cities", con)
-    print df
+    #Join two tables and store in a data frame
+    #what was the point of this other than practicing with pandas?  Or is there a way to do the query directly with the data frame?
+    df = pd.read_sql("SELECT name, state, year, warm_month, cold_month, average_high FROM cities INNER JOIN weather ON name = city", con)
+    
+    #Query to get city, state that are warmest in July
+    cur.execute("SELECT name, state FROM cities INNER JOIN weather ON name = city WHERE warm_month = 'July'")
+    #Gets all the rows from that query so we can do something with them
+    rows = cur.fetchall()
+    
+    #a string to start the sentence
+    result = "The cities that are warmest in July are: "
+    
+    #for each of the rows in the result set, add the city and state to the sentence
+    for row in rows:
+        result = result + " " + row[0] + ", " + row[1] + ","
+    
+    #get rid of the trailing comma and add a period to make it a proper sentence
+    result = result[:-1]
+    result += '.'
+    #print the sentence
+    print result    
 	
 
 	    
